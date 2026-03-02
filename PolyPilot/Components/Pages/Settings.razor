@@ -1096,6 +1096,7 @@
         var dataTheme = theme switch
         {
             UiTheme.System => "system",
+            UiTheme.SystemSolarized => "system-solarized",
             UiTheme.PolyPilotDark => "",        // default, no attribute needed
             UiTheme.PolyPilotLight => "polypilot-light",
             UiTheme.SolarizedDark => "solarized-dark",
@@ -1108,6 +1109,7 @@
     private string GetThemeLabel(UiTheme theme) => theme switch
     {
         UiTheme.System => "System",
+        UiTheme.SystemSolarized => "System (Solarized)",
         UiTheme.PolyPilotDark => "PolyPilot Dark",
         UiTheme.PolyPilotLight => "PolyPilot Light",
         UiTheme.SolarizedDark => "Solarized Dark",
@@ -1118,6 +1120,7 @@
     private string GetThemePreviewClass(UiTheme theme) => theme switch
     {
         UiTheme.System => "tp-system",
+        UiTheme.SystemSolarized => "tp-system",
         UiTheme.PolyPilotDark => "tp-pp-dark",
         UiTheme.PolyPilotLight => "tp-pp-light",
         UiTheme.SolarizedDark => "tp-sol-dark",
