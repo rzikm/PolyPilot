@@ -8,7 +8,7 @@
     "scenarios": [
         {
             "id": "mode-switch-persistent-to-embedded-and-back",
-            "name": "Sessions survive Persistent → Embedded → Persistent round trip",
+            "name": "Sessions survive Persistent \u2192 Embedded \u2192 Persistent round trip",
             "steps": [
                 {
                     "action": "evaluate",
@@ -126,7 +126,7 @@
         },
         {
             "id": "mode-switch-rapid-no-session-loss",
-            "name": "Rapid Embedded↔Persistent switching preserves active-sessions.json",
+            "name": "Rapid Embedded\u2194Persistent switching preserves active-sessions.json",
             "steps": [
                 {
                     "action": "shell",
@@ -581,7 +581,7 @@
                 },
                 {
                     "action": "note",
-                    "text": "To fully test: kill the persistent server process while session is processing, then wait up to 2 minutes for the watchdog to detect inactivity and clear the stuck state (10 min if a tool is running). The session should show a system message: 'Session appears stuck — no response received.'"
+                    "text": "To fully test: kill the persistent server process while session is processing, then wait up to 2 minutes for the watchdog to detect inactivity and clear the stuck state (10 min if a tool is running). The session should show a system message: 'Session appears stuck \u2014 no response received.'"
                 },
                 {
                     "action": "wait",
@@ -649,7 +649,7 @@
                     "expect": {
                         "equals": "true"
                     },
-                    "note": "Sessions should be visible after relaunch — not silently lost"
+                    "note": "Sessions should be visible after relaunch \u2014 not silently lost"
                 },
                 {
                     "action": "evaluate",
@@ -754,7 +754,7 @@
                 {
                     "action": "evaluate",
                     "script": "Array.from(document.querySelectorAll('.session-card.processing, .session-item .processing-dot')).length",
-                    "note": "Count sessions showing processing state — stale sessions should not be here"
+                    "note": "Count sessions showing processing state \u2014 stale sessions should not be here"
                 },
                 {
                     "action": "note",
@@ -787,7 +787,7 @@
                     "action": "evaluate",
                     "script": "document.querySelector('.toggle-icon')?.textContent?.trim()",
                     "expect": {
-                        "equals": "▶"
+                        "equals": "\u25b6"
                     },
                     "note": "Section starts collapsed"
                 },
@@ -804,7 +804,7 @@
                     "action": "evaluate",
                     "script": "document.querySelector('.toggle-icon')?.textContent?.trim()",
                     "expect": {
-                        "equals": "▼"
+                        "equals": "\u25bc"
                     },
                     "note": "Section is now expanded"
                 },
@@ -869,7 +869,7 @@
                     "expect": {
                         "equals": true
                     },
-                    "note": "Token remains blurred — QR and token toggles are independent"
+                    "note": "Token remains blurred \u2014 QR and token toggles are independent"
                 }
             ]
         },
@@ -977,7 +977,7 @@
         },
         {
             "id": "session-menu-closes-on-click-outside",
-            "name": "Session contextual menu (⋯) closes when clicking outside, including main content area",
+            "name": "Session contextual menu (\u22ef) closes when clicking outside, including main content area",
             "steps": [
                 {
                     "action": "evaluate",
@@ -1068,6 +1068,167 @@
                         "equals": 0
                     },
                     "note": "Group menu closed after clicking outside in main content area"
+                }
+            ]
+        },
+        {
+            "id": "cmd-comma-opens-settings",
+            "name": "Cmd+, keyboard shortcut navigates to Settings page",
+            "steps": [
+                {
+                    "action": "evaluate",
+                    "script": "document.querySelector('.settings-page')",
+                    "expect": {
+                        "equals": null
+                    },
+                    "note": "Not on settings page initially"
+                },
+                {
+                    "action": "evaluate",
+                    "script": "document.dispatchEvent(new KeyboardEvent('keydown', {key: ',', metaKey: true, bubbles: true})); true",
+                    "note": "Simulate Cmd+,"
+                },
+                {
+                    "action": "wait",
+                    "duration": 1000
+                },
+                {
+                    "action": "evaluate",
+                    "script": "document.querySelector('.settings-page') !== null",
+                    "expect": {
+                        "equals": true
+                    },
+                    "note": "Settings page is now displayed"
+                }
+            ]
+        },
+        {
+            "id": "statistics-popup-opens-from-sidebar",
+            "name": "Statistics popup opens when clicking chart icon in sidebar header",
+            "steps": [
+                {
+                    "action": "evaluate",
+                    "script": "document.querySelector('.stats-popup-overlay.open')",
+                    "expect": {
+                        "equals": null
+                    },
+                    "note": "Statistics popup is initially closed"
+                },
+                {
+                    "action": "evaluate",
+                    "script": "document.querySelector('button[title=\"Statistics\"]').click(); true",
+                    "note": "Click the statistics icon button"
+                },
+                {
+                    "action": "wait",
+                    "duration": 500
+                },
+                {
+                    "action": "evaluate",
+                    "script": "document.querySelector('.stats-popup-overlay.open') !== null",
+                    "expect": {
+                        "equals": true
+                    },
+                    "note": "Statistics popup is now open"
+                },
+                {
+                    "action": "evaluate",
+                    "script": "document.querySelector('.stats-popup-header h3')?.textContent",
+                    "expect": {
+                        "equals": "Usage Statistics"
+                    },
+                    "note": "Popup displays correct title"
+                },
+                {
+                    "action": "evaluate",
+                    "script": "document.querySelector('.stats-popup-overlay').click(); true",
+                    "note": "Click overlay to close"
+                },
+                {
+                    "action": "wait",
+                    "duration": 500
+                },
+                {
+                    "action": "evaluate",
+                    "script": "document.querySelector('.stats-popup-overlay.open')",
+                    "expect": {
+                        "equals": null
+                    },
+                    "note": "Statistics popup is closed again"
+                }
+            ]
+        },
+        {
+            "id": "settings-category-nav-scrolls-to-section",
+            "name": "Settings page category navigation scrolls to the selected section",
+            "steps": [
+                {
+                    "action": "evaluate",
+                    "note": "Navigate to settings page",
+                    "script": "window.location.href = '/settings'; true"
+                },
+                {
+                    "action": "wait",
+                    "duration": 1000
+                },
+                {
+                    "action": "evaluate",
+                    "script": "document.querySelector('.settings-nav') !== null",
+                    "expect": {
+                        "equals": true
+                    },
+                    "note": "Category nav is visible"
+                },
+                {
+                    "action": "evaluate",
+                    "script": "document.querySelector('.settings-nav-item.active')?.textContent?.trim()",
+                    "note": "Check which category is active"
+                },
+                {
+                    "action": "evaluate",
+                    "script": "document.querySelectorAll('.settings-nav-item')[2]?.click(); true",
+                    "note": "Click the UI category nav item"
+                },
+                {
+                    "action": "wait",
+                    "duration": 500
+                },
+                {
+                    "action": "evaluate",
+                    "script": "document.getElementById('settings-ui') !== null",
+                    "expect": {
+                        "equals": true
+                    },
+                    "note": "UI settings section exists with correct id"
+                }
+            ]
+        },
+        {
+            "id": "settings-no-statistics-section",
+            "name": "Settings page no longer contains Statistics section",
+            "steps": [
+                {
+                    "action": "evaluate",
+                    "note": "Navigate to settings page",
+                    "script": "window.location.href = '/settings'; true"
+                },
+                {
+                    "action": "wait",
+                    "duration": 1000
+                },
+                {
+                    "action": "evaluate",
+                    "script": "Array.from(document.querySelectorAll('.group-title')).map(e => e.textContent)",
+                    "capture": "groupTitles",
+                    "note": "Get all group titles"
+                },
+                {
+                    "action": "evaluate",
+                    "script": "Array.from(document.querySelectorAll('.group-title')).some(e => e.textContent === 'Statistics')",
+                    "expect": {
+                        "equals": false
+                    },
+                    "note": "Statistics is not a settings group"
                 }
             ]
         }
